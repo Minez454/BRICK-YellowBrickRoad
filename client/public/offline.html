@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YellowBrickRoad - Offline</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+        
+        .offline-features {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+        
+        .feature-text {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .retry-button {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+        }
+        
+        .retry-button:active {
+            transform: translateY(0);
+        }
+        
+        .connection-status {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #ef4444;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.online {
+            background: #10b981;
+            animation: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .emergency-button {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .emergency-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📱</div>
+        <h1>You're Offline</h1>
+        <p>Don't worry! YellowBrickRoad continues to work offline with cached resources and essential features.</p>
+        
+        <div class="offline-features">
+            <div class="feature-item">
+                <div class="feature-icon">🗺️</div>
+                <div class="feature-text">
+                    <div class="feature-title">Cached Maps</div>
+                    <div class="feature-desc">View previously loaded resources</div>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📚</div>
+                <div class="feature-text">
+                    <div class="feature-title">Offline Workbooks</div>
+                    <div class="feature-desc">Continue your learning modules</div>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💊</div>
+                <div class="feature-text">
+                    <div class="feature-title">Medication Reminders</div>
+                    <div class="feature-desc">Get local notifications</div>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📄</div>
+                <div class="feature-text">
+                    <div class="feature-title">Document Access</div>
+                    <div class="feature-desc">View cached documents</div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="retry-button" onclick="retryConnection()">
+            Try Reconnecting
+        </button>
+        
+        <button class="emergency-button" onclick="showEmergencyContacts()">
+            Emergency Contacts
+        </button>
+        
+        <div class="connection-status">
+            <span class="status-indicator" id="statusIndicator"></span>
+            <span id="statusText">Checking connection...</span>
+        </div>
+    </div>
+    
+    <script>
+        // Check connection status
+        function checkConnection() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            if (navigator.onLine) {
+                // Test actual connectivity
+                fetch('/api/health', { 
+                    method: 'HEAD',
+                    cache: 'no-cache'
+                })
+                .then(() => {
+                    statusIndicator.classList.add('online');
+                    statusText.textContent = 'Connected - Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                })
+                .catch(() => {
+                    statusIndicator.classList.remove('online');
+                    statusText.textContent = 'No internet connection';
+                });
+            } else {
+                statusIndicator.classList.remove('online');
+                statusText.textContent = 'No internet connection';
+            }
+        }
+        
+        // Retry connection
+        function retryConnection() {
+            const button = document.querySelector('.retry-button');
+            button.textContent = 'Checking...';
+            button.disabled = true;
+            
+            checkConnection();
+            
+            setTimeout(() => {
+                button.textContent = 'Try Reconnecting';
+                button.disabled = false;
+            }, 3000);
+        }
+        
+        // Show emergency contacts
+        function showEmergencyContacts() {
+            const emergencyInfo = `
+EMERGENCY CONTACTS
+
+🚨 Immediate Danger: Call 911
+
+📞 Suicide & Crisis Lifeline: 988
+📞 National Domestic Violence: 800-799-7233
+📞 Homeless Hotline: 211
+📞 Crisis Text Line: Text HOME to 741741
+
+🏥 Las Vegas Resources:
+- Clark County Social Services: 702-455-4270
+- Nevada 2-1-1: Dial 211
+- Las Vegas Rescue Mission: 702-382-1766
+- Catholic Charities: 702-385-2662
+
+📍 Nearest Emergency Room:
+- UMC Trauma Center: 702-383-2000
+- Sunrise Hospital: 702-731-8000
+            `;
+            
+            alert(emergencyInfo);
+        }
+        
+        // Listen for connection changes
+        window.addEventListener('online', checkConnection);
+        window.addEventListener('offline', () => {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            statusIndicator.classList.remove('online');
+            statusText.textContent = 'Connection lost';
+        });
+        
+        // Initial check
+        checkConnection();
+        
+        // Set up periodic connection checks
+        setInterval(checkConnection, 30000); // Check every 30 seconds
+        
+        // Register service worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('Service Worker registered:', registration);
+                })
+                .catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+    </script>
+</body>
+</html>
