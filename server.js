@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const speedInsightsMiddleware = require('./middleware/speedInsights');
 require('dotenv').config();
 
 const app = express();
@@ -24,6 +25,9 @@ app.use(limiter);
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// Vercel Speed Insights middleware - injects performance tracking script into HTML responses
+app.use(speedInsightsMiddleware);
 
 // Static files for uploads
 app.use('/uploads', express.static('uploads'));
