@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -125,15 +126,17 @@ export default function Agencies() {
             </div>
             <p className="agency-desc">{agency.description}</p>
             <div className="agency-services">
-              {agency.services.map(s => (
+              {agency.services.slice(0, 3).map(s => (
                 <span key={s} className="service-tag">{s}</span>
               ))}
+              {agency.services.length > 3 && <span className="service-tag">+{agency.services.length - 3} more</span>}
             </div>
             <div className="agency-contact">
               {agency.phone && <span>📞 {agency.phone}</span>}
               {agency.address && <span>📍 {agency.address}</span>}
             </div>
             <div className="agency-actions">
+              <Link to={`/agencies/${agency.id}`} className="btn-outline">View Details</Link>
               {user ? (
                 applied.has(agency.id) ? (
                   <span className="applied-badge">{t('agencies_applied')}</span>
@@ -143,7 +146,7 @@ export default function Agencies() {
                   </button>
                 )
               ) : (
-                <a href="/register" className="btn-primary">{t('agencies_sign_in')}</a>
+                <Link to={`/agencies/${agency.id}`} className="btn-primary">{t('agencies_apply')}</Link>
               )}
             </div>
           </div>

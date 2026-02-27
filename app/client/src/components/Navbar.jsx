@@ -26,10 +26,10 @@ export default function Navbar() {
           <>
             <Link to="/dashboard" className={isActive('/dashboard')}>{t('nav_dashboard')}</Link>
             <Link to="/assessment" className={isActive('/assessment')}>{t('nav_assessment')}</Link>
-            <Link to="/map" className={isActive('/map')}>{t('nav_map')}</Link>
-            <Link to="/agencies" className={isActive('/agencies')}>{t('nav_agencies')}</Link>
           </>
         )}
+        <Link to="/map" className={isActive('/map')}>{t('nav_map')}</Link>
+        <Link to="/agencies" className={isActive('/agencies')}>{t('nav_agencies')}</Link>
         <Link to="/benefits" className={isActive('/benefits')}>{t('nav_benefits')}</Link>
       </div>
       <div className="nav-actions">
@@ -45,6 +45,7 @@ export default function Navbar() {
           <>
             <Link to="/login" className="btn-outline-sm">{t('nav_login')}</Link>
             <Link to="/register" className="btn-primary-sm">{t('nav_get_started')}</Link>
+            <Link to="/portal" className="portal-nav-btn" title="Agency staff portal">🏢 Portal</Link>
           </>
         )}
       </div>
