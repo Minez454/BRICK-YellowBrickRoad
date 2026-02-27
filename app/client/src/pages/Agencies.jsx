@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
-const CATEGORIES = [
-  { value: 'all', label: 'All Agencies' },
-  { value: 'shelter', label: '🏠 Shelter' },
-  { value: 'food', label: '🍽️ Food' },
-  { value: 'health', label: '🏥 Health' },
-  { value: 'legal', label: '⚖️ Legal' },
-  { value: 'veterans', label: '🎖️ Veterans' },
-  { value: 'services', label: '🤝 Services' },
+const CATEGORY_KEYS = [
+  { value: 'all', tKey: 'cat_all_agencies' },
+  { value: 'shelter', emoji: '🏠', tKey: 'cat_shelter' },
+  { value: 'food', emoji: '🍽️', tKey: 'cat_food' },
+  { value: 'health', emoji: '🏥', tKey: 'cat_health' },
+  { value: 'legal', emoji: '⚖️', tKey: 'cat_legal' },
+  { value: 'veterans', emoji: '🎖️', tKey: 'cat_veterans' },
+  { value: 'services', emoji: '🤝', tKey: 'cat_services' },
 ];
 
 function ApplyModal({ agency, onClose, onSuccess }) {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { t } = useLanguage();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -33,20 +35,20 @@ function ApplyModal({ agency, onClose, onSuccess }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
-        <h3>Apply to {agency.name}</h3>
+        <h3>{t('agencies_modal_title')} {agency.name}</h3>
         {error && <div className="alert-error">{error}</div>}
         <form onSubmit={submit}>
           <div className="form-group">
-            <label>Message (optional)</label>
+            <label>{t('agencies_msg_label')}</label>
             <textarea
-              rows={4} placeholder="Briefly describe your situation and what help you need..."
+              rows={4} placeholder={t('agencies_msg_placeholder')}
               value={message} onChange={e => setMessage(e.target.value)}
             />
           </div>
           <div className="modal-actions">
-            <button type="button" onClick={onClose} className="btn-outline">Cancel</button>
+            <button type="button" onClick={onClose} className="btn-outline">{t('agencies_cancel')}</button>
             <button type="submit" disabled={loading} className="btn-primary">
-              {loading ? 'Submitting...' : 'Submit Application'}
+              {loading ? t('agencies_submitting') : t('agencies_submit')}
             </button>
           </div>
         </form>
@@ -63,6 +65,7 @@ export default function Agencies() {
   const [applied, setApplied] = useState(new Set());
   const [success, setSuccess] = useState('');
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const params = {};
@@ -89,23 +92,23 @@ export default function Agencies() {
   return (
     <div className="agencies-page">
       <div className="agencies-header">
-        <h2>Agency Directory</h2>
-        <p>Browse Las Vegas social service agencies and apply for support</p>
+        <h2>{t('agencies_title')}</h2>
+        <p>{t('agencies_sub')}</p>
         <div className="agencies-controls">
           <input
-            type="text" placeholder="Search agencies..."
+            type="text" placeholder={t('agencies_search')}
             value={search} onChange={e => setSearch(e.target.value)}
             className="search-input"
           />
         </div>
         <div className="category-tabs">
-          {CATEGORIES.map(c => (
+          {CATEGORY_KEYS.map(c => (
             <button
               key={c.value}
               className={`tab-btn ${category === c.value ? 'active' : ''}`}
               onClick={() => setCategory(c.value)}
             >
-              {c.label}
+              {c.emoji ? `${c.emoji} ` : ''}{t(c.tKey)}
             </button>
           ))}
         </div>
@@ -118,7 +121,7 @@ export default function Agencies() {
           <div key={agency.id} className="agency-card">
             <div className="agency-card-header">
               <h3>{agency.name}</h3>
-              <span className="category-badge">{agency.category}</span>
+              <span className="category-badge">{t(`cat_${agency.category}`) || agency.category}</span>
             </div>
             <p className="agency-desc">{agency.description}</p>
             <div className="agency-services">
@@ -133,14 +136,14 @@ export default function Agencies() {
             <div className="agency-actions">
               {user ? (
                 applied.has(agency.id) ? (
-                  <span className="applied-badge">✓ Applied</span>
+                  <span className="applied-badge">{t('agencies_applied')}</span>
                 ) : (
                   <button onClick={() => setApplying(agency)} className="btn-primary">
-                    Apply Now
+                    {t('agencies_apply')}
                   </button>
                 )
               ) : (
-                <a href="/register" className="btn-primary">Sign in to Apply</a>
+                <a href="/register" className="btn-primary">{t('agencies_sign_in')}</a>
               )}
             </div>
           </div>

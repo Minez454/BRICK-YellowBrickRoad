@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import api from '../api';
+import { useLanguage } from '../context/LanguageContext';
 
 // Fix Leaflet default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -38,6 +39,7 @@ export default function ResourceMap() {
   const [resources, setResources] = useState([]);
   const [category, setCategory] = useState('all');
   const [selected, setSelected] = useState(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     api.get('/resources', { params: { category } }).then(r => setResources(r.data));
@@ -48,8 +50,8 @@ export default function ResourceMap() {
   return (
     <div className="map-page">
       <div className="map-sidebar">
-        <h2>Resource Map</h2>
-        <p className="map-subtitle">Find services near you in Las Vegas</p>
+        <h2>{t('map_title')}</h2>
+        <p className="map-subtitle">{t('map_subtitle')}</p>
 
         <div className="category-filters">
           {Object.entries(CATEGORY_CONFIG).map(([key, cfg]) => (
@@ -59,7 +61,7 @@ export default function ResourceMap() {
               style={category === key ? { borderColor: cfg.color, color: cfg.color } : {}}
               onClick={() => setCategory(key)}
             >
-              {cfg.emoji} {cfg.label}
+              {cfg.emoji} {t(`cat_${key}`) || cfg.label}
             </button>
           ))}
         </div>

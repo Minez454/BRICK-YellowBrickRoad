@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -8,6 +9,7 @@ import Assessment from './pages/Assessment';
 import ResourceMap from './pages/ResourceMap';
 import Agencies from './pages/Agencies';
 import Dashboard from './pages/Dashboard';
+import Benefits from './pages/Benefits';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -26,6 +28,7 @@ function AppRoutes() {
           <Route path="/register" element={<Register />} />
           <Route path="/map" element={<ResourceMap />} />
           <Route path="/agencies" element={<Agencies />} />
+          <Route path="/benefits" element={<Benefits />} />
           <Route path="/assessment" element={<PrivateRoute><Assessment /></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         </Routes>
@@ -36,8 +39,10 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppRoutes />
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </LanguageProvider>
   );
 }

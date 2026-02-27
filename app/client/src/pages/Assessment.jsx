@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import { useLanguage } from '../context/LanguageContext';
 
 const CATEGORY_COLORS = {
-  shelter: '#ef4444',
-  benefits: '#f59e0b',
-  health: '#10b981',
-  legal: '#6366f1',
-  housing: '#3b82f6',
-  veterans: '#8b5cf6',
-  food: '#f97316',
+  shelter: '#ef4444', benefits: '#f59e0b', health: '#10b981',
+  legal: '#6366f1', housing: '#3b82f6', veterans: '#8b5cf6', food: '#f97316',
 };
 
 const CATEGORY_ICONS = {
@@ -25,6 +21,7 @@ export default function Assessment() {
   const [loading, setLoading] = useState(false);
   const [prevAssessment, setPrevAssessment] = useState(undefined);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     api.get('/assessment/questions').then(r => setQuestions(r.data));
@@ -35,13 +32,8 @@ export default function Assessment() {
     setAnswers(prev => ({ ...prev, [questionId]: answer }));
   };
 
-  const next = () => {
-    if (current < questions.length - 1) setCurrent(c => c + 1);
-  };
-
-  const back = () => {
-    if (current > 0) setCurrent(c => c - 1);
-  };
+  const next = () => { if (current < questions.length - 1) setCurrent(c => c + 1); };
+  const back = () => { if (current > 0) setCurrent(c => c - 1); };
 
   const submit = async () => {
     setLoading(true);
@@ -55,15 +47,15 @@ export default function Assessment() {
     }
   };
 
-  if (prevAssessment === undefined) return <div className="page-loading">Loading...</div>;
+  if (prevAssessment === undefined) return <div className="page-loading">{t('loading')}</div>;
 
   if (results) {
     return (
       <div className="assessment-page">
         <div className="results-header">
           <div className="results-icon">✅</div>
-          <h2>Your Personalized Recommendations</h2>
-          <p>Based on your answers, here's what we recommend:</p>
+          <h2>{t('assess_results_title')}</h2>
+          <p>{t('assess_results_sub')}</p>
         </div>
         <div className="recommendations">
           {results.map((rec, i) => (
@@ -72,13 +64,13 @@ export default function Assessment() {
                 {CATEGORY_ICONS[rec.category] || '📌'} {rec.category}
               </div>
               <p>{rec.text}</p>
-              {rec.priority === 'high' && <span className="urgent-tag">Urgent</span>}
+              {rec.priority === 'high' && <span className="urgent-tag">{t('assess_urgent')}</span>}
             </div>
           ))}
         </div>
         <div className="results-actions">
-          <button onClick={() => navigate('/agencies')} className="btn-primary">Browse Agencies</button>
-          <button onClick={() => navigate('/map')} className="btn-outline">View Resource Map</button>
+          <button onClick={() => navigate('/agencies')} className="btn-primary">{t('assess_browse_agencies')}</button>
+          <button onClick={() => navigate('/map')} className="btn-outline">{t('assess_view_map')}</button>
         </div>
       </div>
     );
@@ -88,18 +80,18 @@ export default function Assessment() {
     return (
       <div className="assessment-page">
         <div className="prev-assessment">
-          <h2>You have a previous assessment</h2>
-          <p>Would you like to view your previous results or start a new assessment?</p>
+          <h2>{t('assess_prev_title')}</h2>
+          <p>{t('assess_prev_sub')}</p>
           <div className="prev-actions">
-            <button onClick={() => setResults(prevAssessment.recommendations)} className="btn-primary">View Previous Results</button>
-            <button onClick={() => setPrevAssessment(null)} className="btn-outline">Start New Assessment</button>
+            <button onClick={() => setResults(prevAssessment.recommendations)} className="btn-primary">{t('assess_view_prev')}</button>
+            <button onClick={() => setPrevAssessment(null)} className="btn-outline">{t('assess_new')}</button>
           </div>
         </div>
       </div>
     );
   }
 
-  if (!questions.length) return <div className="page-loading">Loading questions...</div>;
+  if (!questions.length) return <div className="page-loading">{t('loading')}</div>;
 
   const q = questions[current];
   const progress = ((current + 1) / questions.length) * 100;
@@ -108,7 +100,7 @@ export default function Assessment() {
     <div className="assessment-page">
       <div className="assessment-card">
         <div className="assessment-header">
-          <span className="step-label">Step {current + 1} of {questions.length}</span>
+          <span className="step-label">{t('assess_step')} {current + 1} {t('assess_of')} {questions.length}</span>
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${progress}%` }} />
           </div>
@@ -129,16 +121,12 @@ export default function Assessment() {
         </div>
 
         <div className="assessment-nav">
-          <button onClick={back} disabled={current === 0} className="btn-outline">← Back</button>
+          <button onClick={back} disabled={current === 0} className="btn-outline">{t('assess_back')}</button>
           {current < questions.length - 1 ? (
-            <button onClick={next} disabled={!answers[q.id]} className="btn-primary">Next →</button>
+            <button onClick={next} disabled={!answers[q.id]} className="btn-primary">{t('assess_next')}</button>
           ) : (
-            <button
-              onClick={submit}
-              disabled={!answers[q.id] || loading}
-              className="btn-primary"
-            >
-              {loading ? 'Analyzing...' : 'Get My Recommendations'}
+            <button onClick={submit} disabled={!answers[q.id] || loading} className="btn-primary">
+              {loading ? t('assess_loading') : t('assess_submit')}
             </button>
           )}
         </div>
