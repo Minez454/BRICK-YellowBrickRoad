@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: yellowbrickroad
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd app/client && npm install && npm run build && cd ../server && npm install
+    startCommand: node app/server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 5000
