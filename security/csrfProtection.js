@@ -1,8 +1,6 @@
-// csrfProtection.js
-// Security features to protect against CSRF attacks
+const csrf = require('csurf');
 
-function csrfProtection(req, res, next) {
-    // Implementation of CSRF protection...
-}
+// This sets up the "Secret Handshake" using Cookies
+const csrfProtection = csrf({ cookie: true });
 
 module.exports = csrfProtection;
